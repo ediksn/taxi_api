@@ -1,0 +1,80 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title Document
+    link(href='http://fonts.googleapis.com/css?family=Open+Sans', rel='stylesheet', type='text/css')
+    style.
+      body{
+      font-family: ‘Open Sans’, Arial, sans-serif;
+      }
+      .container{
+      padding: 10px 10px 0px 10px;
+      height: auto;
+      border: 15px solid #dddddd;
+      max-width: 700px;
+      margin-right: auto;
+      margin-left: auto;
+      }
+      .logo{
+      width: 100%;
+      margin-right: auto;
+      margin-left: auto;
+      text-align: center;
+      }
+      .logo img{
+      margin-right: auto;
+      margin-left: auto;
+      width: 50%;
+      }
+      .titulo{
+      margin-top: 30px;
+      width: 100%;
+      height: auto;
+      min-height: 40px;
+      line-height: auto;
+      line-height: auto;
+      background: #fac311;
+      text-align: center;
+      display: table;
+      }
+      .titulo h3{
+      font-size: 20px;
+      display: table-cell;
+      vertical-align: middle;
+      }
+      .texto{
+      font-size: 18px;
+      }
+      .derechos{
+      height: auto;
+      background:#dddddd;
+      max-width: 750px;
+      margin-right: auto;
+      margin-left: auto;
+      text-align: center;
+      }
+  body
+    .container
+      .logo
+        img(src='https://appolotaxi.com/images/logo.png', alt='')
+      .titulo
+        h3 Estimado #{nombre} #{apellido}
+      .texto
+        p
+          | Sea bienvenido a Appolo Taxi, su registro se ha efectuado correctamente,
+          | por el momento su solicitud está en verificación y le estaremos dando 
+          | confirmación dentro de la próximas 48 horas laborales.  
+        p Detalles de su cuenta
+        p Nombre y apellido: #{nombre} #{apellido}
+        p Nombre y Número de teléfono: #{telefono}
+        p Correo electrónico: #{email}
+        p 
+          | Si tiene alguan queja o información que quiera dejarnos saber nos 
+          | puede enviar un correo electrónico a la dirección (soporte@appolotaxi.com)
+        br
+        p Appolo Taxi
+    .derechos
+      | ©2019 Apolo. All rights reserved.

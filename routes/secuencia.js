@@ -1,0 +1,98 @@
+'use strict'
+
+import express from 'express'
+import multer from 'multer'
+import { Secuencia} from '../api'
+import { handleError } from '../Utils'
+import { Auth } from '../middleware'
+import { Login } from '../services'
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/images/vehiculo/')
+    },
+    filename: function (req, file, cb) {
+      //console.log(file);
+      const fileObj = {
+        "image/png": ".png",
+        "image/jpeg": ".jpeg",
+        "image/jpg": ".jpg"
+      };
+      if (fileObj[file.mimetype] == undefined) {
+        cb(new Error("file format not valid"));
+      } else {
+        cb(null, file.fieldname + '-' + Date.now() + fileObj[file.mimetype])
+      }
+    }
+  })
+  
+  const upload = multer({storage: storage})
+  const app = express.Router()
+  
+  app.get('/',async (req, res) => {
+    try {
+      const data = await Secuencia.find()
+      if(data.length==0){
+        res.status(404).json({message:'No existe ninguna secuencia'})
+      }
+      else
+        res.status(200).json(data)
+    } catch (error) {
+      handleError(error, res)
+    }
+  })
+
+  app.get('/sec',async (req, res) => {
+    try {
+      const data = await Secuencia.findSec()
+      if(data.length==0){
+        res.status(404).json({message:'No existe ninguna secuencia'})
+      }
+      else
+        res.status(200).json(data)
+    } catch (error) {
+      handleError(error, res)
+    }
+  })
+
+  app.get('/:id', Auth.isAuth, async (req, res) => {
+    try {
+      const data = await Secuencia.findById(req.params.id)
+      if(!data)
+        res.status(404).json({message:`No existe la secuencia con el id ${req.params.id}`})
+      else
+        res.status(200).json(data)
+    } catch (error) {
+      handleError(error, res)
+    }
+  })
+
+  app.post('/', upload.single('imagen'), async (req, res) => {
+    // console.log(req.body)
+    try {
+      const data = await Secuencia.create(req.body)
+      //const chofer = await Chofer.update({_id:req.body.owner}, {$set:{vehiculos:req.body}})
+      res.status(201).json(data)
+    } catch (error) {
+      handleError(error, res)
+    }
+  })
+
+  app.put('/', Auth.isUsuario , async (req, res) => {
+    try {
+      const data = await Secuencia.update(req.body)
+      res.status(200).json({message: `La secuencia con el id ${req.body._id} ha sido actualizado exitosamente`, data})
+    } catch (error) {
+      handleError(error, res)
+    }
+  })
+  
+  app.delete('/:id', Auth.isUsuario, async (req, res) => {
+    try {
+      const data = await Secuencia.delete(req.params.id)
+      res.status(200).json({message: `La secuencia con el id ${req.params.id} ha sido eliminado`,data})
+    } catch (error) {
+      handleError(error, res)
+    }
+  })
+  
+  export default app
